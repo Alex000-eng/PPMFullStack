@@ -8,8 +8,9 @@ import edu.cornell.PPMFullStack.domain.Project;
 @Repository
 public interface ProjectRepository extends CrudRepository<Project, Long> {
 
-    @Override
+    Project findByProjectIdentifier(String projectId);
 
-    Iterable<Project> findAllById(Iterable<Long> ids);
+    @Override
+    Iterable<Project> findAll();
 
 }

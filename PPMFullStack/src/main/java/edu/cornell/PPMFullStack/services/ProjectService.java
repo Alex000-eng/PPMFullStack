@@ -3,6 +3,7 @@ package edu.cornell.PPMFullStack.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import edu.cornell.PPMFullStack.Exceptions.ProjectIdException;
 import edu.cornell.PPMFullStack.domain.Project;
 import edu.cornell.PPMFullStack.repositories.ProjectRepository;
 
@@ -15,7 +16,30 @@ public class ProjectService {
     public Project saveOrUpdateProject(Project project) {
 
         // Logic
+        try {
+            project.setProjectIdentifier(project.getProjectIdentifier().toUpperCase());
+            return projectRepository.save(project);
+        } catch (Exception e) {
+            throw new ProjectIdException(
+                "Project Id " + project.getProjectIdentifier() + " already existed");
+        }
 
-        return projectRepository.save(project);
     }
+
+    public Project findProjectByProjectIdentifer(String projectIdentifier) {
+
+        Project project= projectRepository.findByProjectIdentifier(projectIdentifier.toUpperCase());
+
+        if (project == null) {
+            throw new ProjectIdException(
+                "Project Id" + projectIdentifier + "doesn't exist");
+        }
+
+        return project;
+    }
+
+    public Iterable<Project> findAllProject() {
+        return projectRepository.findAll();
+    }
+
 }
