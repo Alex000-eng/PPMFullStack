@@ -42,4 +42,29 @@ public class ProjectService {
         return projectRepository.findAll();
     }
 
+    public void deleteProjectById(String projectId) {
+        Project project= projectRepository.findByProjectIdentifier(projectId.toUpperCase());
+
+        if (project == null) {
+            throw new ProjectIdException("Project with id " + projectId + " doesn't exist");
+        }
+
+        projectRepository.delete(project);
+
+    }
+
+    @Deprecated
+    public Project updateProjectById(String projectId, Project newProject) {
+        Project project= projectRepository.findByProjectIdentifier(projectId.toUpperCase());
+
+        if (project == null) {
+            throw new ProjectIdException("Project with id " + projectId + " doesn't exist");
+        }
+
+        projectRepository.delete(project);
+
+        return saveOrUpdateProject(newProject);
+
+    }
+
 }
