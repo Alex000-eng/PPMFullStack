@@ -22,17 +22,17 @@ public class ProjectTask {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private Long idLong;
+    private Long id;
 
     @Column(updatable= false)
-    private String projectSequenceString;
+    private String projectSequence;
 
     @NotBlank(message= "Please include a project summary!")
     private String summary;
 
     private String acceptanceCriteria;
 
-    private String statu;
+    private String status;
 
     private Integer priority;
 
@@ -43,14 +43,6 @@ public class ProjectTask {
     private Date dueDate;
 
     private Date create_At;
-
-    public Backlog getBacklog() {
-        return backlog;
-    }
-
-    public void setBacklog(Backlog backlog) {
-        this.backlog= backlog;
-    }
 
     private Date update_At;
 
@@ -63,20 +55,30 @@ public class ProjectTask {
         super();
     }
 
-    public Long getIdLong() {
-        return idLong;
+    @PrePersist
+    protected void onCreate() {
+        create_At= new Date();
     }
 
-    public void setIdLong(Long idLong) {
-        this.idLong= idLong;
+    @PreUpdate
+    protected void onUpdate() {
+        update_At= new Date();
     }
 
-    public String getProjectSequenceString() {
-        return projectSequenceString;
+    public Long getId() {
+        return id;
     }
 
-    public void setProjectSequenceString(String projectSequenceString) {
-        this.projectSequenceString= projectSequenceString;
+    public void setId(Long id) {
+        this.id= id;
+    }
+
+    public String getProjectSequence() {
+        return projectSequence;
+    }
+
+    public void setProjectSequence(String projectSequence) {
+        this.projectSequence= projectSequence;
     }
 
     public String getSummary() {
@@ -95,12 +97,12 @@ public class ProjectTask {
         this.acceptanceCriteria= acceptanceCriteria;
     }
 
-    public String getStatu() {
-        return statu;
+    public String getStatus() {
+        return status;
     }
 
-    public void setStatu(String statu) {
-        this.statu= statu;
+    public void setStatus(String status) {
+        this.status= status;
     }
 
     public Integer getPriority() {
@@ -143,23 +145,21 @@ public class ProjectTask {
         this.update_At= update_At;
     }
 
-    @PrePersist
-    protected void onCreate() {
-        create_At= new Date();
+    public Backlog getBacklog() {
+        return backlog;
     }
 
-    @PreUpdate
-    protected void onUpdate() {
-        update_At= new Date();
+    public void setBacklog(Backlog backlog) {
+        this.backlog= backlog;
     }
 
     @Override
     public String toString() {
-        return "ProjectTask [idLong=" + idLong + ", projectSequenceString=" +
-            projectSequenceString + ", summary=" + summary + ", acceptanceCriteria=" +
-            acceptanceCriteria + ", statu=" + statu + ", priority=" + priority +
-            ", projectIdentifier=" + projectIdentifier + ", dueDate=" + dueDate + ", create_At=" +
-            create_At + ", update_At=" + update_At + "]";
+        return "ProjectTask [id=" + id + ", projectSequence=" + projectSequence + ", summary=" +
+            summary + ", acceptanceCriteria=" + acceptanceCriteria + ", status=" + status +
+            ", priority=" + priority + ", projectIdentifier=" + projectIdentifier + ", dueDate=" +
+            dueDate + ", create_At=" + create_At + ", update_At=" + update_At + ", backlog=" +
+            backlog + "]";
     }
 
 }
