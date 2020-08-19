@@ -22,4 +22,15 @@ public class CustomerResponseEntityExceptionHandler extends ResponseEntityExcept
         return new ResponseEntity<>(projectIdExpectionResponse, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler
+    public final ResponseEntity<Object> handleProjectNotFoundException(
+        ProjectNotFoundException projectNotFoundException,
+        WebRequest request) {
+
+        ProjectNotFoundExceptionResponse projectNotFoundExceptionResponse= new ProjectNotFoundExceptionResponse(
+            projectNotFoundException.getMessage());
+
+        return new ResponseEntity<>(projectNotFoundExceptionResponse, HttpStatus.BAD_REQUEST);
+    }
+
 }
