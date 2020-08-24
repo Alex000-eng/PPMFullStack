@@ -1,5 +1,7 @@
 package edu.cornell.PPMFullStack.web;
 
+import java.security.Principal;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,49 +34,37 @@ public class ProjectController {
 
     @PostMapping("")
     public ResponseEntity<?> createNewProject(@Valid @RequestBody Project project,
-        BindingResult result) {
+        BindingResult result, Principal principal) {
 
         ResponseEntity<?> errorMapEntity= mapValidationErrorService.MapValidationServce(result);
         if (errorMapEntity != null) return errorMapEntity;
 
-        Project newProject= projectService.saveOrUpdateProject(project);
+        Project newProject= projectService.saveOrUpdateProject(project, principal.getName());
         return new ResponseEntity<>(newProject, HttpStatus.CREATED);
     }
 
     @GetMapping("/{projectId}")
-    public ResponseEntity<?> getProjectById(@PathVariable String projectId) {
-        Project project= projectService.findProjectByProjectIdentifer(projectId);
+    public ResponseEntity<?> getProjectById(@PathVariable String projectId, Principal principal) {
+        Project project= projectService.findProjectByProjectIdentifer(projectId,
+            principal.getName());
 
         return new ResponseEntity<>(project, HttpStatus.OK);
 
     }
 
     @GetMapping("/all")
-    public Iterable<Project> getAllProjects() {
-        return projectService.findAllProject();
+    public Iterable<Project> getAllProjects(Principal principal) {
+        return projectService.findAllProject(principal.getName());
     }
 
     @DeleteMapping("/{projectId}")
-    public ResponseEntity<?> deleteProjectById(@PathVariable String projectId) {
+    public ResponseEntity<?> deleteProjectById(@PathVariable String projectId,
+        Principal principal) {
 
-        projectService.deleteProjectById(projectId);
+        projectService.deleteProjectById(projectId, principal.getName());
 
         return new ResponseEntity<>(
             "Project with id " + projectId + " was deleted successfully", HttpStatus.OK);
-
-    }
-
-    @Deprecated
-    @PostMapping("/{projectId}")
-    public ResponseEntity<?> updateProjectById(@PathVariable String projectId,
-        @Valid @RequestBody Project newProject, BindingResult result) {
-
-        ResponseEntity<?> errorMapEntity= mapValidationErrorService.MapValidationServce(result);
-        if (errorMapEntity != null) return errorMapEntity;
-
-        Project project= projectService.updateProjectById(projectId, newProject);
-
-        return new ResponseEntity<>(newProject, HttpStatus.OK);
 
     }
 

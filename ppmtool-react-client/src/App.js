@@ -11,6 +11,9 @@ import UpdateProject from "./components/Project/UpdateProject";
 import ProjectBoard from "./components/ProjectBoard/ProjectBoard";
 import AddProjectTask from "./components/ProjectBoard/ProjectTask/AddProjectTask";
 import UpdateProjectTask from "./components/ProjectBoard/ProjectTask/UpdateProjectTask";
+import Landing from "./components/Layout/Landing";
+import Register from "./components/UserManagement/Register";
+import Login from "./components/UserManagement/Login";
 
 function App() {
   console.log(store.getState());
@@ -19,11 +22,16 @@ function App() {
       <Router>
         <div className="App">
           <Header />
-          <Route path="/dashboard" component={DashBoard} />
-          <Route path="/addProject" component={AddProject} />
-          <Route path="/updateProject/:id" component={UpdateProject} />
-          <Route path="/projectBoard/:id" component={ProjectBoard} />
-          <Route path="/addProjectTask/:id" component={AddProjectTask} />
+
+          <Route exact path="/" component={Landing} />
+          <Route exact path="/register" component={Register} />
+          <Route exact path="/login" component={Login} />
+
+          <Route exact path="/dashboard" component={DashBoard} />
+          <Route exact path="/addProject" component={AddProject} />
+          <Route exact path="/updateProject/:id" component={UpdateProject} />
+          <Route exact path="/projectBoard/:id" component={ProjectBoard} />
+          <Route exact path="/addProjectTask/:id" component={AddProjectTask} />
           <Route
             path="/updateProjectTask/:backlog_id/:projectSequence"
             component={UpdateProjectTask}
